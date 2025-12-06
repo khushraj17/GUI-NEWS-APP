@@ -3,7 +3,7 @@ import requests
 from urllib.request import urlopen
 from PIL import ImageTk,Image
 import io
-
+import webbrowser
 
 class news_GUI : 
     def __init__(self):
@@ -57,12 +57,14 @@ class news_GUI :
         prev = Button(frame,text="prev",width=16,height=3)
         prev.pack(side=LEFT)
 
-        read = Button(frame,text="Read more",width=16,height=3)
+        read = Button(frame,text="Read more",width=16,height=3,command=lambda: self.open_link(self.data["results"][index]["link"]) )
         read.pack(side=LEFT)
 
         next= Button(frame,text="next",width=16,height=3)
         next.pack(side=LEFT)
 
+    def open_link(self,url): 
+        webbrowser.open(url)
 
 
 obj = news_GUI()
