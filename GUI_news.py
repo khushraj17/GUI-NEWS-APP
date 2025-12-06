@@ -51,8 +51,8 @@ class news_GUI :
 
         try:
             if img_url:
-                req = urlopen(img_url)
-                rawdata = req.read()
+                req = Request(img_url, headers={"User-Agent": "Mozilla/5.0"})
+                rawdata = urlopen(req).read()
                 im = Image.open(io.BytesIO(rawdata)).resize((350,250))
             else:
                 raise Exception("No image")
@@ -84,7 +84,7 @@ class news_GUI :
         read = Button(frame,text="Read more",width=20,height=3,command=lambda: self.open_link(self.data["results"][index]["link"]) )
         read.pack(side=LEFT,padx=5)
 
-        if index != len(self.data["results"])-2: 
+        if index != len(self.data["results"])-1: 
             next= Button(frame,text="next",width=20,height=3,command=lambda: self.load_news_item(index+1))
             next.pack(side=LEFT,padx=5)
 
