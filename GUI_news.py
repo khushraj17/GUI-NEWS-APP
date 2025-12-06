@@ -30,9 +30,19 @@ class news_GUI :
         details = Label(self.root,text= self.data["results"][index]["description"], bg='black',fg= 'white',wraplength=350,justify='center')
         details.pack(pady=(10,20))
         details.config(font=('verdana',15))
-        self.root.mainloop()
-
-        Frame(self.root,)
         
+
+        frame = Frame(self.root,bg = 'black')
+        frame.pack(expand=True,fill=BOTH)
+
+        prev = Button(frame,text="prev",width=16,height=3)
+        prev.pack(side=LEFT)
+
+        read = Button(frame,text="Read more",width=16,height=3)
+        read.pack(side=LEFT)
+
+        next= Button(frame,text="next",width=16,height=3)
+        next.pack(side=LEFT)
+        self.root.mainloop()
 
 obj = news_GUI()
