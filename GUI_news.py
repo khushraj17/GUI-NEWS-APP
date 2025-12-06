@@ -17,7 +17,7 @@ class news_GUI :
         self.root = Tk()
         self.root.title("NEWS APP")
         self.root.iconbitmap(r"resources\favicon.ico")
-        self.root.geometry('350x600')
+        # self.root.geometry('350x600')
         self.root.resizable(0,0)
         self.root.config(bg="gray")
         
@@ -48,19 +48,19 @@ class news_GUI :
 
         details = Label(self.root,text= self.data["results"][index]["description"], bg='black',fg= 'white',wraplength=350,justify='center')
         details.pack(pady=(10,20))
-        details.config(font=('verdana',15))
+        details.config(font=('verdana',10))
         
 
         frame = Frame(self.root,bg = 'black')
         frame.pack(expand=True,fill=BOTH)
 
-        prev = Button(frame,text="prev",width=16,height=3)
+        prev = Button(frame,text="prev",width=16,height=3,command=lambda: self.load_news_item(index-1))
         prev.pack(side=LEFT)
 
         read = Button(frame,text="Read more",width=16,height=3,command=lambda: self.open_link(self.data["results"][index]["link"]) )
         read.pack(side=LEFT)
 
-        next= Button(frame,text="next",width=16,height=3)
+        next= Button(frame,text="next",width=16,height=3,command=lambda: self.load_news_item(index+1))
         next.pack(side=LEFT)
 
     def open_link(self,url): 
