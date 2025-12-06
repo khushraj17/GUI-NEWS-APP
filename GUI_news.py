@@ -6,13 +6,17 @@ import io
 import webbrowser
 
 class news_GUI : 
+
     def __init__(self):
-        self.data = requests.get("https://newsdata.io/api/1/latest?country=in&language=en&apikey=pub_c0f3643f166144ce908b709535b2a6c4").json()
+
+        try:
+            self.data = requests.get("https://newsdata.io/api/1/latest?country=in&language=en&apikey=pub_c0f3643f166144ce908b709535b2a6c4").json()
+        except:
+            print("Abhi thikh kerke deta hu(API ki dikkat h)")    
         self.loadgui()
         self.load_news_item(0)
-        
         self.root.mainloop()
-
+        
     def loadgui(self): 
         self.root = Tk()
         self.root.title("NEWS APP")
@@ -27,19 +31,27 @@ class news_GUI :
             i.destroy()
 
     def load_news_item(self,index): 
+
+        if index < 0 or index >= len(self.data["results"]):
+            return
         self.clear()
 
         img_url = self.data["results"][index]["image_url"]
 
-        if img_url:
-            rawdata = urlopen(img_url).read()
-            im = Image.open(io.BytesIO(rawdata)).resize((350,250))
-        else:
+        try:
+            if img_url:
+                req = urlopen(img_url)
+                rawdata = req.read()
+                im = Image.open(io.BytesIO(rawdata)).resize((350,250))
+            else:
+                raise Exception("No image")
+        except:
             im = Image.open("fallback.png").resize((350,250))
 
         photo = ImageTk.PhotoImage(im)
 
         lable = Label(self.root, image=photo)
+        lable.image = photo 
         lable.pack()
 
         heading = Label(self.root,text= self.data["results"][index]["title"], bg='black',fg= 'white',wraplength=350,justify='center')
@@ -54,14 +66,16 @@ class news_GUI :
         frame = Frame(self.root,bg = 'black')
         frame.pack(expand=True,fill=BOTH)
 
-        prev = Button(frame,text="prev",width=16,height=3,command=lambda: self.load_news_item(index-1))
-        prev.pack(side=LEFT)
+        if index !=  0:
+            prev = Button(frame,text="prev",width=16,height=3,command=lambda: self.load_news_item(index-1))
+            prev.pack(side=LEFT)
 
         read = Button(frame,text="Read more",width=16,height=3,command=lambda: self.open_link(self.data["results"][index]["link"]) )
         read.pack(side=LEFT)
 
-        next= Button(frame,text="next",width=16,height=3,command=lambda: self.load_news_item(index+1))
-        next.pack(side=LEFT)
+        if index != len(self.data["results"])-2: 
+            next= Button(frame,text="next",width=16,height=3,command=lambda: self.load_news_item(index+1))
+            next.pack(side=LEFT)
 
     def open_link(self,url): 
         webbrowser.open(url)
