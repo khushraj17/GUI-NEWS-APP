@@ -5,6 +5,11 @@ The app fetches real-time news, displays images, headlines, descriptions, and al
 
 ---
 
+## Screenshots
+
+
+---
+
 ## 🚀 Features
 
 ✔ Live news fetched using **NewsData.io API**  
